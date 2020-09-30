@@ -7,6 +7,25 @@ public class cards extends JPanel
 {
   JButton button = new JButton("Shuffle");//creating button
 
+  window.add(button, BorderLayout.SOUTH);
+  button.addActionListener(new ActionListener(){
+    public void actionPerformed(ActionEvent e){
+      Random random = new Random();
+      for (int i = cardNames.length - 1; i > 0; i--) {
+        for (int j = cardNames[i].length - 1; j > 0; j--) {
+            int m = random.nextInt(i + 1);
+            int n = random.nextInt(j + 1);
+
+            String temp = cardNames[i][j];
+              cardNames[i][j] = cardNames[m][n];
+              cardNames[m][n] = temp;
+
+              //change image icon in jpanel
+
+            }
+          }
+        });
+
   public static void main(String[] a) {
      cards Deck = new cards();
      JFrame window = new JFrame("Card Randomizer");
