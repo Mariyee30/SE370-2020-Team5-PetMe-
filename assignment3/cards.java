@@ -17,6 +17,20 @@ public class cards extends JPanel
 
      //add frame to main class
   // window.getContentPane().add(new cards());
+    // testing add one card
 
- }
+    Mycanvas m = new MyCanvas();
+    JFrame f = new Jframe();
+    f.add(m);
+    f.setSize(400,400);
+    f.setVisible(true);
+  }
+
+    public void paint(Graphics g)
+    {
+      Toolkit t = Toolkit.getDefaultToolkit();
+      Image i = t.getImage("2C.png");
+      g.drawImage(i, 120,100,this);
+    }
+
 }
