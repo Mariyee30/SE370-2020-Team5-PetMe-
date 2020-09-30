@@ -7,7 +7,6 @@ public class cards extends JPanel
 {
   JButton button = new JButton("Shuffle");//creating button
 
-<<<<<<< HEAD
   window.add(button, BorderLayout.SOUTH);
   button.addActionListener(new ActionListener(){
     public void actionPerformed(ActionEvent e){
@@ -26,27 +25,51 @@ public class cards extends JPanel
             }
           }
         });
-=======
-  private Image club;
+
+  private Image club; // testing one image
+  //private Image diamond;
+  //private Image spade;
+  //private Image heart;
 
   private int x, y; //for coordinate
 
-  public cards(){
-    //super();
+  public cards()
+  {
+    super();
     setBackground(Color.GREEN);
     loadImage();
     x = 25;
     y = 25;
   }
 
+  private void loadImage()
+  {
+    ImageIcon cc = new ImageIcon("2C.png"); //club card *get only one image
+    club = cc.getImage();
 
+    /*
+    ImageIcon cd = new ImageIcon(""); //diamond card
+    diamond = cd.getImage();
 
+    ImageIcon cs = new ImageIcon(""); //spade card
+    spade = cs.getImage();
 
+    ImageIcon ch = new ImageIcon(""); //heart card
+    heart = ch.getImage();
+    */
+  }
 
+  public void paintComponent(Graphics g)
+  {
+    super.paintComponent(g);
+    g.drawImage(club, x, 0, this);
 
-
-
->>>>>>> ceaee76440d2b83c52735868c3f3fcfb1f83c23d
+    /*
+    g.drawImage(diamond, x, 100, this);
+    g.drawImage(spade, 300, 100, this);
+    g.drawImage(heart, x, 300, this);
+    */
+  }
 
   public static void main(String[] a) {
      cards Deck = new cards();
@@ -60,20 +83,5 @@ public class cards extends JPanel
     // window.getContentPane().add(new cards());
     // testing add one card
 
-/*
-    Mycanvas m = new MyCanvas();
-    JFrame f = new Jframe();
-    f.add(m);
-    f.setSize(400,400);
-    f.setVisible(true);
-    */
   }
-/*
-    public void paint(Graphics g)
-    {
-      Toolkit t = Toolkit.getDefaultToolkit();
-      Image i = t.getImage("2C.png");
-      g.drawImage(i, 120,100,this);
-    }
-*/
 }
