@@ -29,6 +29,7 @@ public class cards extends JPanel
             cardNames[i][j] = (j+1)+cardFace[i]+".png";
           }
         }
+      }
 
   window.add(button, BorderLayout.SOUTH);
   button.addActionListener(new ActionListener(){
