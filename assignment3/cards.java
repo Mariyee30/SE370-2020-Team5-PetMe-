@@ -1,112 +1,109 @@
-
-import java.awt.*;
-import javax.swing.*;
 import java.util.Random;
+import java.awt.*;
 
+import javax.swing.*;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 public class cards extends JPanel
 {
-  JButton button = new JButton("Shuffle");//creating button
-
-  int rows = 4;
-      int columns = 13;
-      String[][] cardNames;
-      cardNames = new String[rows][columns];//2d string array for cards
-      String cardFace[] = new String[]{"C","D","H","S"};
+  JButton button = new JButton("Shuffle"); //creating button
+  String[][] NameOfCards; // 2d string array of cards
+  private JPanel[][] boxes; //2d jpanel array of jpanels
 
 
-      for(int i=0;i<rows;i++) {
-        for(int j=0;j<columns;j++)
-        {
-          if(j==0) {
-            cardNames[i][j] = "A"+cardFace[i]+".png";
-          }else if(j==10) {
-            cardNames[i][j] = "J"+cardFace[i]+".png";
-          }else if(j==11) {
-            cardNames[i][j] = "Q"+cardFace[i]+".png";
-          }else if(j==12) {
-            cardNames[i][j] = "K"+cardFace[i]+".png";
-          }else {
-            cardNames[i][j] = (j+1)+cardFace[i]+".png";
-          }
+  public cards()
+  {
+    //set of the grid layout
+    setLayout(new FlowLayout());
+
+    NameOfCards = new String[5][13]; //2d string array for cards
+    boxes = new JPanel[4][13]; //2d jpanel array for panels
+    setBackground(Color.green); //background color to green
+
+
+    //creasting memory for each kind of card
+    String faces[] = new String[]{"C","D","H","S"};
+
+    //putting pngs into 2d array
+    for(int i=0;i<4;i++) {
+      for(int j=0;j<13;j++)
+      {
+        if(j==0) {
+          NameOfCards[i][j] = "A"+faces[i]+".png";
+        }else if(j==10) {
+          NameOfCards[i][j] = "J"+faces[i]+".png";
+        }else if(j==11) {
+          NameOfCards[i][j] = "Q"+faces[i]+".png";
+        }else if(j==12) {
+          NameOfCards[i][j] = "K"+faces[i]+".png";
+        }else {
+          NameOfCards[i][j] = (j+1)+faces[i]+".png";
         }
       }
-
-  window.add(button, BorderLayout.SOUTH);
-  button.addActionListener(new ActionListener(){
-    public void actionPerformed(ActionEvent e){
-      Random random = new Random();
-      for (int i = cardNames.length - 1; i > 0; i--) {
-        for (int j = cardNames[i].length - 1; j > 0; j--) {
-            int m = random.nextInt(i + 1);
-            int n = random.nextInt(j + 1);
-
-            String temp = cardNames[i][j];
-              cardNames[i][j] = cardNames[m][n];
-              cardNames[m][n] = temp;
-
-              //change image icon in jpanel
-
-            }
-          }
-        });
-
-  private Image club; // testing one image
-    //private Image diamond;
-    //private Image spade;
-    //private Image heart;
-
-    private int x, y; //for coordinate
-
-    public cards()
-    {
-      super();
-      setBackground(Color.GREEN);
-      loadImage();
-      x = 25;
-      y = 25;
     }
 
-    private void loadImage()
-    {
-      ImageIcon cc = new ImageIcon("2C.png"); //club card *get only one image
-      club = cc.getImage();
+    //gets each card png and displays
+    for(int i = 0; i < boxes.length; i++) {
+      for(int j = 0; j < boxes[i].length; j++) {
+        ImageIcon icon = new ImageIcon("PNG/"+NameOfCards[i][j]);
+        Image scaleImage = icon.getImage().getScaledInstance(150, 150,Image.SCALE_DEFAULT);
+        JLabel wIcon = new JLabel(new ImageIcon(scaleImage));
 
-      /*
-      ImageIcon cd = new ImageIcon(""); //diamond card
-      diamond = cd.getImage();
+        //add panel
+        boxes[i][j] = new JPanel();
+        boxes[i][j].add(wIcon);
 
-      ImageIcon cs = new ImageIcon(""); //spade card
-      spade = cs.getImage();
+        //add into boxes matrix
+        add(boxes[i][j]);
+        final int iCopy = i;
+        final int jCopy = j;
 
-      ImageIcon ch = new ImageIcon(""); //heart card
-      heart = ch.getImage();
-      */
+        //set color black
+        boxes[iCopy][jCopy].setBackground(Color.green);
+
+        //set border gray
+        boxes[i][j].setBorder(BorderFactory.createLineBorder(Color.green));
+        }
       }
+      add(button);
+      //creating an action listener for the shuffle button to work
+      button.addActionListener(new ActionListener(){
+        public void actionPerformed(ActionEvent e){
+          // Fisher–Yates algorithm modified for two-dimensional arrays:
+        Random random = new Random();
+           for(int i=0;i<4;i++) {
+            for(int j=0;j<13;j++) {
+                int row = random.nextInt(4);
+                int col = random.nextInt(13);
 
-      public void paintComponent(Graphics g)
-      {
-        super.paintComponent(g);
-        g.drawImage(club, x, 0, this);
+                int row1 = random.nextInt(4);
+                int col1 = random.nextInt(13);
 
-        /*
-        g.drawImage(diamond, x, 100, this);
-        g.drawImage(spade, 300, 100, this);
-        g.drawImage(heart, x, 300, this);
-        */
+                String name = NameOfCards[row][col];
+                NameOfCards[row][col] = NameOfCards[row1][col1];
+                NameOfCards[row1][col1] = name;
+
+                boxes[i][j].removeAll();
+                ImageIcon icon = new ImageIcon("PNG/"+NameOfCards[i][j]);
+                Image scaleImage = icon.getImage().getScaledInstance(150, 150,Image.SCALE_DEFAULT);
+                JLabel wIcon = new JLabel(new ImageIcon(scaleImage));
+                boxes[i][j].add(wIcon);
+                boxes[i][j].repaint();
+            }
+           }
+      revalidate(); //this call is an instruction to tell the layout manager to reset based on the new component list.
       }
-  public static void main(String[] a) {
-     cards Deck = new cards();
-     JFrame window = new JFrame("Card Randomizer");
-     window.add(Deck, BorderLayout.CENTER);
-     window.setSize(1000,1000);
-     window.setVisible(true);
-     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-     //add frame to main class
-    // window.getContentPane().add(new cards());
-    // testing add one card
-
-
+    });
   }
 
+  public static void main(String[] a) {
+     //cards Deck = new cards();
+        JFrame window = new JFrame("Card Randomizer"); //creating jFrame called window
+        window.setSize(2000,1000); //seting size of window
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //add frame to main class
+        window.getContentPane().add(new cards());
+        window.setVisible(true);
+ }
 }
