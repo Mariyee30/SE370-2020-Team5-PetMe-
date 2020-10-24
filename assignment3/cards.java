@@ -10,7 +10,7 @@ public class cards extends JPanel
 {
   JButton button = new JButton("Shuffle"); //creating button
   String[][] NameOfCards; // 2d string array of cards
-  private JPanel[][] boxes; //2d jpanel array of jpanels 
+  private JPanel[][] boxes; //2d jpanel array of jpanels
 
 
   public cards()
